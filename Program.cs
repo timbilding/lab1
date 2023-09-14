@@ -17,6 +17,7 @@ namespace lab1
                 Console.WriteLine("1 - Вычисление факториала.");
                 Console.WriteLine("2 - Вычисление функции.");
                 Console.WriteLine("3 - Вывод чисел Фибоначчи.");
+                Console.WriteLine("4 - Ряд Тейлора.");
                 int gig = int.Parse(Console.ReadLine());
 
                 switch (gig)
@@ -29,6 +30,9 @@ namespace lab1
                         break;
                     case 3:
                         Fibonacci();
+                        break;
+                    case 4:
+                        Taylor();
                         break;
                 }
             }
@@ -43,9 +47,9 @@ namespace lab1
             {
                 if (num >= 0)
                 {
-                    int factorial = 1;
+                    long factorial = 1;
 
-                    for (int i = 1; i <= num; i++)
+                    for (long i = 1; i <= num; i++)
                     {
                         factorial *= i;
                     }
@@ -107,5 +111,38 @@ namespace lab1
 
             Console.ReadLine();
         }
+
+        static void Taylor()
+        {
+            Console.WriteLine("Подсчитаем точность для cos(x):");
+
+            Console.WriteLine("Введите Х.");
+            double x = double.Parse(Console.ReadLine());
+
+            Console.WriteLine("Сколько будет итераций: ");
+            int iter = int.Parse(Console.ReadLine());
+
+            // cos(x)=1-x^2/2!+x^4/4!-x^6/6!-...=SUM(-1)^n*(x^2n/(2n)!)
+
+            double TaylorCounting;
+            double TaylorSum = 0;
+
+            for (int n = 0; n < iter; n++)
+            {
+                int factorial = 1; 
+
+                for (int i = 1; i <= n * 2; i++)
+                {
+                    factorial *= i;
+                }
+
+                TaylorCounting = Math.Pow(-1, n) * (Math.Pow(x, 2 * n) / (factorial));
+                TaylorSum += TaylorCounting;
+                Console.WriteLine($"Член ряда - {TaylorCounting}");
+            }
+
+            Console.WriteLine($"Сумма ряда - {TaylorSum}");
+        }                
     }
+    
 }
