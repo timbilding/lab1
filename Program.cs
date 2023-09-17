@@ -54,7 +54,7 @@ namespace lab1
                         factorial *= i;
                     }
 
-                    Console.WriteLine($"Факториал числа {num} равен {factorial}");
+                    Console.WriteLine($"Факториал числа {num} равен {Math.Abs(factorial)}");
                 }
                 else
                 {
@@ -93,7 +93,7 @@ namespace lab1
         {
 
             Console.WriteLine("\nДо какого числа считать ряд Фибоначчи?");
-            int n = Convert.ToInt32(Console.ReadLine());
+            int n = int.Parse(Console.ReadLine());
 
             int first = 0;
             Console.Write("{0} ", first);
@@ -103,7 +103,8 @@ namespace lab1
 
             while (sum < n)
             {
-                Console.Write("{0} ", sum);
+                Console.Write($"{sum} ");
+
                 sum = first + second;
                 first = second;
                 second = sum;
@@ -114,21 +115,22 @@ namespace lab1
 
         static void Taylor()
         {
-            Console.WriteLine("Подсчитаем точность для cos(x):");
+            Console.WriteLine("\nПодсчитаем точность для cos(x):");
 
             Console.WriteLine("Введите Х.");
             double x = double.Parse(Console.ReadLine());
 
-            Console.WriteLine("Сколько будет итераций: ");
-            int iter = int.Parse(Console.ReadLine());
+            Console.WriteLine("\nДо какой цифры после запятой уточнять число?");
+            int m = int.Parse(Console.ReadLine());
 
             // cos(x)=1-x^2/2!+x^4/4!-x^6/6!-...=SUM(-1)^n*(x^2n/(2n)!)
 
             double TaylorCounting;
             double TaylorSum = 0;
 
-            for (int n = 0; n < iter; n++)
+            for (int n = 0; m > n + 1; n++)
             {
+
                 int factorial = 1; 
 
                 for (int i = 1; i <= n * 2; i++)
@@ -138,10 +140,11 @@ namespace lab1
 
                 TaylorCounting = Math.Pow(-1, n) * (Math.Pow(x, 2 * n) / (factorial));
                 TaylorSum += TaylorCounting;
-                Console.WriteLine($"Член ряда - {TaylorCounting}");
+                Console.WriteLine($"\nЧлен ряда: {TaylorCounting}");
+                Console.WriteLine($"\nТекущая сумма ряда: {TaylorSum}");
             }
 
-            Console.WriteLine($"Сумма ряда - {TaylorSum}");
+            Console.WriteLine($"\nКонечная сумма ряда: {Math.Round(TaylorSum, (m+1))}");
         }                
     }
     
