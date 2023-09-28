@@ -32,7 +32,7 @@ namespace lab1
                         Fibonacci();
                         break;
                     case 4:
-                        Taylor();
+                        Taylor(1, 5);
                         break;
                 }
             }
@@ -43,18 +43,18 @@ namespace lab1
             Console.WriteLine("Введите число, для которого нужно посчитать факториал:");
             string n = Console.ReadLine();
 
-            if (int.TryParse(n, out int num))
+            if (ulong.TryParse(n, out ulong num))
             {
                 if (num >= 0)
                 {
-                    long factorial = 1;
+                    ulong factorial = 1;
 
-                    for (long i = 1; i <= num; i++)
+                    for (ulong i = 1; i <= num; i++)
                     {
                         factorial *= i;
                     }
 
-                    Console.WriteLine($"Факториал числа {num} равен {Math.Abs(factorial)}");
+                    Console.WriteLine($"Факториал числа {num} равен {factorial}");
                 }
                 else
                 {
@@ -85,7 +85,7 @@ namespace lab1
             if (x > 0 || x <= 4)
             {
                 a = Math.Sqrt(Math.Log(4 / x)) - (1 / x) - Math.Pow(Math.E, Math.Sin(x));
-                Console.WriteLine("Полученный результат: " + a);               
+                Console.WriteLine("Полученный результат: " + a);
             }
         }
 
@@ -99,7 +99,7 @@ namespace lab1
             Console.Write("{0} ", first);
             int second = 1;
             int sum = first + second;
-            
+
 
             while (sum < n)
             {
@@ -113,39 +113,46 @@ namespace lab1
             Console.ReadLine();
         }
 
-        static void Taylor()
+        public static void Taylor(double x, int precision)
         {
-            Console.WriteLine("\nПодсчитаем точность для cos(x):");
+            double sum = 1;
+            double term = 1;
+            ulong n = 1;
 
-            Console.WriteLine("Введите Х.");
-            double x = double.Parse(Console.ReadLine());
-
-            Console.WriteLine("\nДо какой цифры после запятой уточнять число?");
-            int m = int.Parse(Console.ReadLine());
-
-            // cos(x)=1-x^2/2!+x^4/4!-x^6/6!-...=SUM(-1)^n*(x^2n/(2n)!)
-
-            double TaylorCounting;
-            double TaylorSum = 0;
-
-            for (int n = 0; m > n + 1; n++)
+            Console.WriteLine("\nВычисление ряда Маклорена для экспоненты в степени х\n");
+            do
             {
+                term *= x / Fact(n);
+                sum += term;
+                Console.WriteLine("Ряд " + n + "\t\t" + sum);
+                n++;
+            }
+            while (Math.Abs(term) >= Math.Pow(10, -precision));
 
-                int factorial = 1; 
+        }
+        public static ulong Fact(ulong number)
+        {
+            while (true)
+            {
+                ulong n = 0;
+                ulong fact = 1;
 
-                for (int i = 1; i <= n * 2; i++)
+                if (number < 0)
                 {
-                    factorial *= i;
+                    Console.WriteLine("Число отрицательное");
+                }
+                else
+                {
+                    while (n < number)
+                    {
+                        n += 1;
+                        fact *= n;
+                    }
                 }
 
-                TaylorCounting = Math.Pow(-1, n) * (Math.Pow(x, 2 * n) / (factorial));
-                TaylorSum += TaylorCounting;
-                Console.WriteLine($"\nЧлен ряда: {TaylorCounting}");
-                Console.WriteLine($"\nТекущая сумма ряда: {TaylorSum}");
+                return fact;
             }
+        }
 
-            Console.WriteLine($"\nКонечная сумма ряда: {Math.Round(TaylorSum, (m+1))}");
-        }                
     }
-    
 }
